@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="stylesheet" href="style.css">
+ <title>Document</title>
+
+</head>
+
+<body>
+ <div class="cal">
+  <input type="text" placeholder="Enter your input" id="input">
+  <div>
+   <button class="button" value="1">1</button>
+   <button class="button" value="2">2</button>
+   <button class="button" value="3">3</button>
+   <button class="button" value="4">4</button>
+   <button class="button" value="5">5</button>
+  </div>
+  <div>
+   <button class="button" value="6">6</button>
+   <button class="button" value="7">7</button>
+   <button class="button" value="8">8</button>
+   <button class="button" value="9">9</button>
+   <button class="button" value="0">0</button>
+  </div>
+  <div>
+   <button class="opBtn" value="+" onclick="operatorClicked('+')">+</button>
+   <button class="opBtn" value="*" onclick="operatorClicked('*')">*</button>
+   <button class="opBtn" value="-" onclick="operatorClicked('-')">-</button>
+   <button class="opBtn" value="/" onclick="operatorClicked('/')">/</button>
+   <button class="opBtn" value="%" onclick="operatorClicked('%')">%</button>
+  </div>
+  <div>
+   <button class="button" value=".">.</button>
+   <button onclick="clearBtn()" class="clearBtn">C</button>
+   <button id="equateBtn">=</button>
+  </div>
+
+ </div>
+
+ <script>
+  let inputField = document.getElementById('input')
+  let inputBtn = document.querySelectorAll('.button')
+
+  let num1 = ''
+  let num2 = ''
+  let selectedOperator = ''
+
+  function operatorClicked(operator) {
+   if (num1 !== '' && num2 !== '' && selectedOperator !== '') {
+    let newResult = equate()
+    num1 = newResult
+    selectedOperator = operator
+    num2 = ''
+    inputField.value = num1 + selectedOperator + num2
+   } else {
+    selectedOperator = operator
+    inputField.value = selectedOperator
+   }
+  }
+
+  function btnValue() {
+   for (i = 0; i < inputBtn.length; i++) {
+    let btnClicked = inputBtn[i];
+    btnClicked.addEventListener('click', () => {
+     if (selectedOperator === '') {
+      num1 += btnClicked.value
+      inputField.value = num1
+      console.log('this is num1', num1)
+     } else {
+      num2 += btnClicked.value
+      inputField.value = num1 + selectedOperator + num2
+      console.log('this is num2', num2)
+     }
+    })
+   }
+  }
+
+  function compute(num1, num2, selectedOperator) {
+   if (selectedOperator === '+') {
+    return parseFloat(num1) + parseFloat(num2)
+   }
+   else if (selectedOperator === '*') {
+    return parseFloat(num1) * parseFloat(num2)
+   }
+   else if (selectedOperator === '-') {
+    return parseFloat(num1) - parseFloat(num2)
+   }
+   else if (selectedOperator === '/') {
+    return parseFloat(num1) / parseFloat(num2)
+   }
+   else if (selectedOperator === '%') {
+    return parseFloat(num1) % parseFloat(num2)
+   }
+  }
+
+
+  let equateBtn = document.getElementById('equateBtn')
+  equateBtn.addEventListener('click', equate)
+
+  function equate() {
+   if (num1 !== '' && num2 !== '' && selectedOperator !== '') {
+    let result = compute(num1, num2, selectedOperator)
+    inputField.value = result
+    num1 = result
+    num2 = ''
+    selectedOperator = ''
+    return num1
+   }
+  }
+
+  function clearBtn() {
+   num1 = ''
+   num2 = ''
+   selectedOperator = ''
+   inputField.value = ''
+  }
+
+  btnValue()
+
+ </script>
+
+
+</body>
+
+</html>
